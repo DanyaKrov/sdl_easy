@@ -1,0 +1,6 @@
+﻿  main.cpp
+C:\Users\Danya\Desktop\sdl_1\main.cpp(40,133): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+C:\Users\Danya\Desktop\sdl_1\main.cpp(40,147): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Danya\Desktop\sdl_1\main.cpp(45,138): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Danya\Desktop\sdl_1\main.cpp(45,85): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+  sdl_1.vcxproj -> C:\Users\Danya\Desktop\sdl_1\x64\Debug\sdl_1.exe
