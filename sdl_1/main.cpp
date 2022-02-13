@@ -45,6 +45,27 @@ void hor_Diagrm(vector<int> vector1, int x, int y, SDL_Renderer* renderer) {
         rec(x / 6, y / 7 + (y * 5 / 7 / vector1.size()) * i, x * 2 / 3 * vector1[i] / sum(vector1), y * 5 / 14 / vector1.size(), renderer);
     }
 }
+void line(int x1, int y1, int x2, int y2, SDL_Renderer* renderer) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    int dx = x2 - x1;
+    bool statement_x = true;
+    if (dx < 0)
+        statement_x = false;
+    bool statement_y;
+    int dy = y2 - y1;
+    float k = dy / dx;
+    int x = x1;
+    int y = y1;
+    while (x < x2) {
+        SDL_RenderDrawPoint(renderer, x, y);
+        if (!statement_x)
+            x--;
+        else
+            x++;
+        y += int(k);
+    }
+    SDL_RenderPresent(renderer);
+}
 int main(int argc, char** args) {
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -56,7 +77,13 @@ int main(int argc, char** args) {
     SDL_RenderPresent(renderer);
     vector<int> vector1 = { 1, 2, 3, 4};
     //vert_Diagrm(vector1, SDL_GetWindowSurface(window)->w, SDL_GetWindowSurface(window)->h, renderer);
-    hor_Diagrm(vector1, SDL_GetWindowSurface(window)->w, SDL_GetWindowSurface(window)->h, renderer);
+    //hor_Diagrm(vector1, SDL_GetWindowSurface(window)->w, SDL_GetWindowSurface(window)->h, renderer);
+    line(200, 200, 800, 800, renderer);
+    line(350, 200, 650, 800, renderer);
+    ver_line(500, 200, 600, renderer);
+    hor_line(200, 500, 600, renderer);
+    line(650, 200, 350, 800, renderer);
+    line(200, 800, 800, 200, renderer);
     while (statement) {
         continue;
     }
