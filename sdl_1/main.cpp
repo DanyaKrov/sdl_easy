@@ -11,6 +11,11 @@ long long sum(vector<int>vector1) {
         num += vector1[i];
     return num;
 }
+void swap(int &x, int &y) {
+    int g = x;
+    x = y;
+    y = g;
+}
 void hor_line(int x, int y, int length, SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     for (int i = x; i < x + length; i++)
@@ -46,23 +51,63 @@ void hor_Diagrm(vector<int> vector1, int x, int y, SDL_Renderer* renderer) {
     }
 }
 void line(int x1, int y1, int x2, int y2, SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    int dx = x2 - x1;
-    bool statement_x = true;
-    if (dx < 0)
-        statement_x = false;
-    bool statement_y;
-    int dy = y2 - y1;
-    float k = dy / dx;
-    int x = x1;
-    int y = y1;
-    while (x < x2) {
-        SDL_RenderDrawPoint(renderer, x, y);
-        if (!statement_x)
-            x--;
-        else
+    if (x1 > x2) {
+        swap(x1, x2);
+    }
+    if (y1 > y2)
+        swap(y1, y2);
+    if (x1 == x2) {
+        ver_line(x1, y1, y2 - y1, renderer);
+    }
+    else {
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);
+        int x, y, dx = x2 - x1, dy = y2 - y1;
+        int d = (dy << 1) - dx, d1 = dy << 1, d2 = (dy - dx) << 1;
+        x = x1, y = y1;
+        SDL_RenderDrawPoint(renderer, x1, y1);
+        SDL_RenderDrawPoint(renderer, x2, y2);
+        x2--;
+        while (x < x2)
+        {
             x++;
-        y += int(k);
+            if (d < 0)
+                d += d1;
+            else
+            {
+                y++;
+                d += d2;
+            }
+            SDL_RenderDrawPoint(renderer, x, y);
+        }
+        SDL_RenderPresent(renderer);
+    }
+}
+void circle(SDL_Renderer* renderer, int x0, int y0, int radius) {
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);
+    int x = 0;
+    int y = radius;
+    int delta = 1 - 2 * radius;
+    int error = 0;
+    while (y >= 0) {
+        SDL_RenderDrawPoint(renderer, x0 + x, y0 + y);
+        SDL_RenderDrawPoint(renderer, x0 + x, y0 - y);
+        SDL_RenderDrawPoint(renderer, x0 - x, y0 + y);
+        SDL_RenderDrawPoint(renderer, x0 - x, y0 - y);
+        error = 2 * (delta + y) - 1;
+        if (delta < 0 && error <= 0) {
+            x++;
+            delta += 2 * x + 1;
+            continue;
+        }
+        error = 2 * (delta - x) - 1;
+        if (delta > 0 && error > 0) {
+            y--;
+            delta += 1 - 2 * y;
+            continue;
+        }
+        x++;
+        delta += 2 * (x - y);
+        y--;
     }
     SDL_RenderPresent(renderer);
 }
@@ -72,18 +117,13 @@ int main(int argc, char** args) {
     bool statement = true;
     window = SDL_CreateWindow("SDL_RenderClear", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 1000, 0);
     renderer = SDL_CreateRenderer(window, -1, 0);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
     vector<int> vector1 = { 1, 2, 3, 4};
     //vert_Diagrm(vector1, SDL_GetWindowSurface(window)->w, SDL_GetWindowSurface(window)->h, renderer);
     //hor_Diagrm(vector1, SDL_GetWindowSurface(window)->w, SDL_GetWindowSurface(window)->h, renderer);
-    line(200, 200, 800, 800, renderer);
-    line(350, 200, 650, 800, renderer);
-    ver_line(500, 200, 600, renderer);
-    hor_line(200, 500, 600, renderer);
-    line(650, 200, 350, 800, renderer);
-    line(200, 800, 800, 200, renderer);
+    circle(renderer, 100, 100, 10);
     while (statement) {
         continue;
     }
